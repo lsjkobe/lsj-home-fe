@@ -2,18 +2,18 @@ import {useRoutes} from "react-router-dom"
 import {Suspense, lazy} from "react";
 import Login from "../page/Login";
 
-const Home = lazy(() => import("../page/Home"));
-
+// const main = lazy(() => import("../page/main"));
+import App from "../page/main";
 const ROUTE_LIST = [
     {
         path: "/",
         auth: false,
-        element: <Home/>,
+        element: <App/>,
     },
     {
         path: "/group",
         auth: true,
-        element: <Home/>,
+        element: <App/>,
     },
     {
         path: "/login",

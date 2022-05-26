@@ -7,7 +7,7 @@ AxiosHttp.init();
 
 function App() {
     return (
-        <div style={{textAlign: "center"}}>
+        <div>
             <BrowserRouter>
                 <BaseRouter></BaseRouter>
                 <RouteAuthEach></RouteAuthEach>
