@@ -43,6 +43,7 @@ const App = () => {
             </Sider>
             <Layout className="site-layout">
                 <Header
+                    id="components-layout-demo-custom-trigger"
                     className="site-layout-background"
                     style={{
                         padding: 0,
