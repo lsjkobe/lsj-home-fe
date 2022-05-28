@@ -3,7 +3,7 @@ import userHandler from "../common/user-handler";
 import ApiRes from "../model/ApiRes";
 import UserInfo from "../model/UserInfo";
 
-class UserData {
+export default class UserData {
     static urls = {
         getUserByToken: '',
     }
@@ -30,5 +30,3 @@ e
         })
     }
 }
-
-export default UserData;

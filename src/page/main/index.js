@@ -1,6 +1,8 @@
 import {
+    AppstoreOutlined,
+    MailOutlined,
     MenuFoldOutlined,
-    MenuUnfoldOutlined,
+    MenuUnfoldOutlined, SettingOutlined,
     UploadOutlined,
     UserOutlined,
     VideoCameraOutlined,
@@ -10,18 +12,37 @@ import React, {Component} from 'react';
 
 import './main.css'
 import userData from "../../data/user-data";
+import MenuData from "../../data/menu-data";
+import type {MenuProps} from 'antd';
+import MenuVO from "../../model/MenuVO";
 
 const {Header, Sider, Content} = Layout;
+
+type MenuItem = Required<MenuProps>['items'][number];
 
 class Main extends Component {
     constructor() {
         super();
         this.state = {
             collapsed: false,
-            avatarUrl: '\n' +
-                '',
+            avatarUrl: '',
             menuData: []
         }
+    }
+
+    getItem(
+        label: React.ReactNode,
+        key: React.Key,
+        icon?: React.ReactNode,
+        children?: MenuItem[],
+        type?: 'group'): MenuItem {
+        return {
+            key,
+            icon,
+            children,
+            label,
+            type,
+        };
     }
 
     componentDidMount() {
@@ -45,25 +66,37 @@ class Main extends Component {
     }
 
     menuInit() {
-        this.setState({
-            menuData: [
-                {
-                    key: '1',
-                    icon: <UserOutlined/>,
-                    label: 'nav 1',
-                },
-                {
-                    key: '2',
-                    icon: <VideoCameraOutlined/>,
-                    label: 'nav 2',
-                },
-                {
-                    key: '3',
-                    icon: <UploadOutlined/>,
-                    label: 'nav 3',
-                },
-            ]
-        })
+        MenuData.getMenuData()
+            .then(menuData => {
+                let menuTreeList = this.menuDataToShow(menuData);
+                this.setState({
+                    menuData: menuTreeList
+                });
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
+
+    menuDataToShow(menuData:Array<MenuVO>) {
+        let items: MenuProps['items'] = [];
+        for (let menuDataItem of menuData) {
+            let item = this.menuDataSingleToShow(menuDataItem);
+            items.push(item);
+        }
+        return items;
+    }
+
+    menuDataSingleToShow(menuVo: MenuVO) {
+        let item = this.getItem(menuVo.menuName, menuVo.id, <MailOutlined />);
+        if (menuVo.children && menuVo.children.length > 0) {
+            item.children = [];
+            for (let child of menuVo.children) {
+                let childItem = this.menuDataSingleToShow(child);
+                item.children.push(childItem);
+            }
+        }
+        return item;
     }
 
     render() {
