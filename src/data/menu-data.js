@@ -1,6 +1,6 @@
 import ApiAxios from "../common/api-axios";
 import {RBAC_CONST} from "../rbac-const";
-import MenuVO from "../model/MenuVO";
+import MenuTree from "../model/MenuTree";
 
 export default class MenuData {
     static urls = {
@@ -10,7 +10,7 @@ export default class MenuData {
     constructor() {
     }
 
-    static getMenuData = (): Promise<Array<MenuVO>> => {
+    static getMenuTreeList = (): Promise<Array<MenuTree>> => {
         return new Promise((resolve, reject) => {
             ApiAxios.get(this.urls.getMenuTree)
                 .then((menuData: Array<MenuData>) => {

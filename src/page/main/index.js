@@ -1,23 +1,17 @@
 import {
-    AppstoreOutlined,
-    MailOutlined,
     MenuFoldOutlined,
-    MenuUnfoldOutlined, SettingOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
+    MenuUnfoldOutlined,
 } from '@ant-design/icons';
+import './main.css'
 import {Avatar, Badge, Layout, Menu} from 'antd';
 import React, {Component} from 'react';
-
-import './main.css'
 import userData from "../../data/user-data";
 import MenuData from "../../data/menu-data";
 import type {MenuProps} from 'antd';
-import MenuVO from "../../model/MenuVO";
+import MenuTree from "../../model/MenuTree";
+import Icon from "../../common/icon";
 
 const {Header, Sider, Content} = Layout;
-
 type MenuItem = Required<MenuProps>['items'][number];
 
 class Main extends Component {
@@ -26,7 +20,8 @@ class Main extends Component {
         this.state = {
             collapsed: false,
             avatarUrl: '',
-            menuData: []
+            menuTreeShowList: [],
+            menuSel: [],
         }
     }
 
@@ -49,12 +44,12 @@ class Main extends Component {
         this.init();
     }
 
-    init() {
+    init = () => {
         this.userInit();
         this.menuInit();
     }
 
-    userInit() {
+    userInit = () => {
         userData.getUserData()
             .then((userData) => {
                 if (userData && userData.avatarUrl) {
@@ -65,38 +60,46 @@ class Main extends Component {
             })
     }
 
-    menuInit() {
-        MenuData.getMenuData()
-            .then(menuData => {
-                let menuTreeList = this.menuDataToShow(menuData);
+    menuInit = () => {
+        MenuData.getMenuTreeList()
+            .then(menuTreeList => {
+                let menuTreeShowList = this.menuTreeToShow(menuTreeList);
                 this.setState({
-                    menuData: menuTreeList
+                    menuTreeShowList: menuTreeShowList,
+                    menuSel: [`${menuTreeList[0].id}`]
                 });
+
             })
             .catch(e => {
                 console.log(e);
             })
     }
 
-    menuDataToShow(menuData:Array<MenuVO>) {
+    menuTreeToShow = (menuTreeList: Array<MenuTree>) => {
         let items: MenuProps['items'] = [];
-        for (let menuDataItem of menuData) {
-            let item = this.menuDataSingleToShow(menuDataItem);
+        for (let menuTree of menuTreeList) {
+            let item = this.menuTreeSingleToShow(menuTree);
             items.push(item);
         }
         return items;
     }
 
-    menuDataSingleToShow(menuVo: MenuVO) {
-        let item = this.getItem(menuVo.menuName, menuVo.id, <MailOutlined />);
-        if (menuVo.children && menuVo.children.length > 0) {
+    menuTreeSingleToShow = (menuTree: MenuTree) => {
+        let item = this.getItem(menuTree.menuName, menuTree.id, <Icon icon={menuTree.menuIcon}/>);
+        if (menuTree.children && menuTree.children.length > 0) {
             item.children = [];
-            for (let child of menuVo.children) {
-                let childItem = this.menuDataSingleToShow(child);
+            for (let child of menuTree.children) {
+                let childItem = this.menuTreeSingleToShow(child);
                 item.children.push(childItem);
             }
         }
         return item;
+    }
+
+    onMenuClick = (item) => {
+        this.setState({
+            menuSel: [item.key]
+        });
     }
 
     render() {
@@ -107,8 +110,10 @@ class Main extends Component {
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
-                        items={this.state.menuData}
+                        selectedKeys={this.state.menuSel}
+                        defaultSelectedKeys={this.state.menuSel}
+                        items={this.state.menuTreeShowList}
+                        onClick={this.onMenuClick}
                     />
                 </Sider>
                 <Layout className="site-layout">
@@ -138,7 +143,7 @@ class Main extends Component {
                         style={{
                             margin: '24px 16px',
                             padding: 24,
-                            minHeight: 280,
+                            minHeight: 680,
                         }}
                     >
                         Content
