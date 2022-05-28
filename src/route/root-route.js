@@ -4,6 +4,7 @@ import Login from "../page/Login";
 
 // const main = lazy(() => import("../page/main"));
 import App from "../page/main";
+import Home from "../page/Home";
 const ROUTE_LIST = [
     {
         path: "/",
@@ -13,7 +14,7 @@ const ROUTE_LIST = [
     {
         path: "/group",
         auth: true,
-        element: <App/>,
+        element: <Home/>,
     },
     {
         path: "/login",

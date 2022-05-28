@@ -22,7 +22,7 @@ const RouteAuthEach = () => {
 }
 
 const doLogin = () => {
-    UserHandler.delToken();
+    UserHandler.delUserAuth();
     const urlParams = new URL(window.location.href);
     const origin = urlParams?.origin;
     window.location.href =

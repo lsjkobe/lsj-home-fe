@@ -13,12 +13,15 @@ export default class Login extends Component {
         const ticket = url.searchParams.get("ticket");
         if (!this.state.isLogging && ticket && !UserHandler.getToken()) {
             this.state.isLogging = true;
-            axios.get(process.env.REACT_APP_SERVER_URL + "?ticket=" + ticket).then(r => {
-                console.info(r);
-                if (r && r.data && r.data[process.env.REACT_APP_PARAM_TOKEN]) {
-                    UserHandler.saveToken(r.data[process.env.REACT_APP_PARAM_TOKEN]);
-                }
-            }).finally(() => {
+            axios.get(process.env.REACT_APP_SERVER_URL + "?ticket=" + ticket)
+                .then(r => {
+                    console.info(r);
+                    if (r && r.data && r.data[process.env.REACT_APP_PARAM_TOKEN]) {
+                        const token = r.data[process.env.REACT_APP_PARAM_TOKEN];
+                        const userData = r.data[process.env.REACT_APP_PARAM_USER];
+                        UserHandler.saveUserAuth(userData, token);
+                    }
+                }).finally(() => {
                 this.state.isLogging = false;
             });
         }
