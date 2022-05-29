@@ -21,6 +21,11 @@ const ROUTE_LIST = [
         auth: false,
         element: <Login/>,
     },
+    {
+        path: "/role",
+        auth: false,
+        element: <Login/>,
+    },
 ]
 
 // 路由处理方式

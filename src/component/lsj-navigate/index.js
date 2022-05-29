@@ -1,44 +1,39 @@
-import React, {Component} from "react";
+import React, {Component, useState, useEffect} from "react";
 import {Menu} from "antd";
 import Sider from "antd/es/layout/Sider";
 import MenuData from "../../data/menu-data";
 import MenuTree from "../../model/MenuTree";
 import type {MenuProps} from "antd";
 import Icon from "../../common/icon";
+import { useNavigate } from 'react-router-dom'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-export default class LsjNavigate extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            collapsed: props.collapsed,
-            menuSel: [],
-            menuTreeList: []
-        }
+const LsjNavigate = (props) => {
+    // const {getCollapsed} = props;
+    const [collapsed, setCollapsed] = useState(props.collapsed);
+    const [menuSelKey, setMenuSelKey] = useState([]);
+    const [menuTreeList, setMenuTreeList] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        setCollapsed(props.collapsed);
+    }, [props.collapsed])
+
+    useEffect(() => {
+        init();
+    }, [])
+
+
+    const init = () => {
+        menuInit();
     }
 
-    componentDidMount() {
-        this.init();
-    }
-
-    componentWillReceiveProps(nextProps, nextContext) {
-        this.setState({
-            collapsed: nextProps.collapsed,
-        })
-    }
-
-
-    init = () => {
-        this.menuInit();
-    }
-
-    getItem(
+    const getItem = (
         label: React.ReactNode,
         key: React.Key,
         icon?: React.ReactNode,
         children?: MenuItem[],
-        type?: 'group'): MenuItem {
+        type?: 'group'): MenuItem => {
         return {
             key,
             icon,
@@ -48,14 +43,12 @@ export default class LsjNavigate extends Component{
         };
     }
 
-    menuInit = () => {
+    const menuInit = () => {
         MenuData.getMenuTreeList()
             .then(menuTreeListResp => {
-                let menuTreeList = this.menuTreeToShow(menuTreeListResp);
-                this.setState({
-                    menuTreeList: menuTreeList,
-                    menuSel: [`${menuTreeListResp[0].id}`]
-                });
+                let menuTreeList = menuTreeToShow(menuTreeListResp);
+                setMenuTreeList(menuTreeList);
+                setMenuSelKey(menuTreeListResp[0].menuPath)
 
             })
             .catch(e => {
@@ -63,43 +56,46 @@ export default class LsjNavigate extends Component{
             })
     }
 
-    menuTreeToShow = (menuTreeListResp: Array<MenuTree>) => {
+    const menuTreeToShow = (menuTreeListResp: Array<MenuTree>) => {
         let items: MenuProps['items'] = [];
         for (let menuTree of menuTreeListResp) {
-            let item = this.menuTreeSingleToShow(menuTree);
+            let item = menuTreeSingleToShow(menuTree);
             items.push(item);
         }
         return items;
     }
 
-    menuTreeSingleToShow = (menuTree: MenuTree) => {
-        let item = this.getItem(menuTree.menuName, menuTree.id, <Icon icon={menuTree.menuIcon}/>);
+    const menuTreeSingleToShow = (menuTree: MenuTree) => {
+        let item = getItem(menuTree.menuName, menuTree.menuPath, <Icon icon={menuTree.menuIcon}/>);
         if (menuTree.children && menuTree.children.length > 0) {
             item.children = [];
             for (let child of menuTree.children) {
-                let childItem = this.menuTreeSingleToShow(child);
+                let childItem = menuTreeSingleToShow(child);
                 item.children.push(childItem);
             }
         }
         return item;
     }
 
-    onMenuClick = (item) => {
-        this.setState({
-            menuSel: [item.key]
-        });
+    const onMenuClick = (item) => {
+        setMenuSelKey([item.key]);
+        navigate(item.key);
     }
 
-    render() {
-        return <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+    return (
+        <Sider trigger={null} collapsible collapsed={collapsed}>
             <div className="logo"/>
             <Menu
                 theme="dark"
                 mode="inline"
-                selectedKeys={this.state.menuSel}
-                items={this.state.menuTreeList}
-                onClick={this.onMenuClick}
+                selectedKeys={menuSelKey}
+                items={menuTreeList}
+                onClick={onMenuClick}
             />
-        </Sider>;
-    }
+        </Sider>
+    );
 }
+
+
+
+export default LsjNavigate;

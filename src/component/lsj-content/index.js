@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ContentMenu from "../../page/content-menu";
 import {Content} from "antd/es/layout/layout";
+import {Outlet} from "react-router-dom";
 
 export default class LsjContent extends Component {
 
@@ -17,7 +18,8 @@ export default class LsjContent extends Component {
                 minHeight: 680,
             }}
         >
-            <ContentMenu></ContentMenu>
+            {/*<ContentMenu></ContentMenu>*/}
+            <Outlet/>
         </Content>;
     }
 }
