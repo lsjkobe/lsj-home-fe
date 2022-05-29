@@ -1,19 +1,10 @@
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-} from '@ant-design/icons';
 import './main.css'
-import {Avatar, Badge, Layout, Menu} from 'antd';
+import {Layout} from 'antd';
 import React, {Component} from 'react';
 import userData from "../../data/user-data";
-import MenuData from "../../data/menu-data";
-import type {MenuProps} from 'antd';
-import MenuTree from "../../model/MenuTree";
-import Icon from "../../common/icon";
-import ContentMenu from "../content-menu";
-
-const {Header, Sider, Content} = Layout;
-type MenuItem = Required<MenuProps>['items'][number];
+import LsjNavigate from "../../component/lsj-navigate";
+import LsjHeader from "../../component/lsj-header";
+import LsjContent from "../../component/lsj-content";
 
 class Main extends Component {
     constructor() {
@@ -21,24 +12,7 @@ class Main extends Component {
         this.state = {
             collapsed: false,
             avatarUrl: '',
-            menuTreeShowList: [],
-            menuSel: [],
         }
-    }
-
-    getItem(
-        label: React.ReactNode,
-        key: React.Key,
-        icon?: React.ReactNode,
-        children?: MenuItem[],
-        type?: 'group'): MenuItem {
-        return {
-            key,
-            icon,
-            children,
-            label,
-            type,
-        };
     }
 
     componentDidMount() {
@@ -47,7 +21,6 @@ class Main extends Component {
 
     init = () => {
         this.userInit();
-        this.menuInit();
     }
 
     userInit = () => {
@@ -61,94 +34,19 @@ class Main extends Component {
             })
     }
 
-    menuInit = () => {
-        MenuData.getMenuTreeList()
-            .then(menuTreeList => {
-                let menuTreeShowList = this.menuTreeToShow(menuTreeList);
-                this.setState({
-                    menuTreeShowList: menuTreeShowList,
-                    menuSel: [`${menuTreeList[0].id}`]
-                });
-
-            })
-            .catch(e => {
-                console.log(e);
-            })
-    }
-
-    menuTreeToShow = (menuTreeList: Array<MenuTree>) => {
-        let items: MenuProps['items'] = [];
-        for (let menuTree of menuTreeList) {
-            let item = this.menuTreeSingleToShow(menuTree);
-            items.push(item);
-        }
-        return items;
-    }
-
-    menuTreeSingleToShow = (menuTree: MenuTree) => {
-        let item = this.getItem(menuTree.menuName, menuTree.id, <Icon icon={menuTree.menuIcon}/>);
-        if (menuTree.children && menuTree.children.length > 0) {
-            item.children = [];
-            for (let child of menuTree.children) {
-                let childItem = this.menuTreeSingleToShow(child);
-                item.children.push(childItem);
-            }
-        }
-        return item;
-    }
-
-    onMenuClick = (item) => {
+    onCollapsedChange = (collapsed) => {
         this.setState({
-            menuSel: [item.key]
+            collapsed: collapsed
         });
     }
 
     render() {
         return (
             <Layout>
-                <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-                    <div className="logo"/>
-                    <Menu
-                        theme="dark"
-                        mode="inline"
-                        selectedKeys={this.state.menuSel}
-                        defaultSelectedKeys={this.state.menuSel}
-                        items={this.state.menuTreeShowList}
-                        onClick={this.onMenuClick}
-                    />
-                </Sider>
+                <LsjNavigate collapsed={this.state.collapsed}></LsjNavigate>
                 <Layout className="site-layout">
-                    <Header
-                        id="components-layout-demo-custom-trigger"
-                        className="site-layout-background"
-                        style={{
-                            padding: 0,
-                            textAlign: "right",
-                        }}
-                    >
-                        {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                            className: 'trigger',
-                            style: {float: "left"},
-                            onClick: () => this.setState({
-                                collapsed: !this.state.collapsed
-                            }),
-                        })}
-                        <span style={{marginRight: '20px',}} className="avatar-item">
-                        <Badge count={0} size={'small'}>
-                            <Avatar src={this.state.avatarUrl}/>
-                        </Badge>
-                    </span>
-                    </Header>
-                    <Content
-                        className="site-layout-background"
-                        style={{
-                            margin: '10px 10px',
-                            // padding: 10,
-                            minHeight: 680,
-                        }}
-                    >
-                        <ContentMenu></ContentMenu>
-                    </Content>
+                    <LsjHeader collapsed={this.state.collapsed} onCollapsedChange={this.onCollapsedChange}></LsjHeader>
+                    <LsjContent></LsjContent>
                 </Layout>
             </Layout>
         );
