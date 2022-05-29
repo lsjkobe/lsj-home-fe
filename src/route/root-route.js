@@ -6,11 +6,11 @@ import Login from "../page/Login";
 import Home from "../page/Home";
 import Main from "../page/main";
 const ROUTE_LIST = [
-    {
-        path: "/",
-        auth: false,
-        element: <Main/>,
-    },
+    // {
+    //     path: "/",
+    //     auth: false,
+    //     element: <Main/>,
+    // },
     {
         path: "/group",
         auth: true,
