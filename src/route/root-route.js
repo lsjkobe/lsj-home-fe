@@ -3,13 +3,13 @@ import {Suspense, lazy} from "react";
 import Login from "../page/Login";
 
 // const main = lazy(() => import("../page/main"));
-import App from "../page/main";
 import Home from "../page/Home";
+import Main from "../page/main";
 const ROUTE_LIST = [
     {
         path: "/",
         auth: false,
-        element: <App/>,
+        element: <Main/>,
     },
     {
         path: "/group",

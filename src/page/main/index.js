@@ -10,6 +10,7 @@ import MenuData from "../../data/menu-data";
 import type {MenuProps} from 'antd';
 import MenuTree from "../../model/MenuTree";
 import Icon from "../../common/icon";
+import ContentMenu from "../content-menu";
 
 const {Header, Sider, Content} = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -141,12 +142,12 @@ class Main extends Component {
                     <Content
                         className="site-layout-background"
                         style={{
-                            margin: '24px 16px',
-                            padding: 24,
+                            margin: '10px 10px',
+                            // padding: 10,
                             minHeight: 680,
                         }}
                     >
-                        Content
+                        <ContentMenu></ContentMenu>
                     </Content>
                 </Layout>
             </Layout>
