@@ -3,15 +3,12 @@ import ContentMenu from "../../page/content-menu";
 import {Content} from "antd/es/layout/layout";
 import {Outlet} from "react-router-dom";
 import {BaseRouter} from "../../route/root-route";
+import LsjTabs from "../lsj-tabs";
 
-export default class LsjContent extends Component {
+const LsjContent = () => {
 
-    constructor(props, context: any) {
-        super(props, context);
-    }
-
-    render() {
-        return <Content
+    return (
+        <Content
             className="site-layout-background"
             style={{
                 margin: '10px 10px',
@@ -19,7 +16,10 @@ export default class LsjContent extends Component {
                 minHeight: 680,
             }}
         >
+            <LsjTabs></LsjTabs>
             <BaseRouter></BaseRouter>
-        </Content>;
-    }
+        </Content>
+    );
 }
+
+export default LsjContent;
