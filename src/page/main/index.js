@@ -1,56 +1,40 @@
 import './main.css'
 import {Layout} from 'antd';
-import React, {Component} from 'react';
-import userData from "../../data/user-data";
+import React, {useRef, useState} from 'react';
 import LsjNavigate from "../../component/lsj-navigate";
 import LsjHeader from "../../component/lsj-header";
 import LsjContent from "../../component/lsj-content";
+import LsjTabs from "../../component/lsj-tabs";
 
-class Main extends Component {
-    constructor() {
-        super();
-        this.state = {
-            collapsed: false,
-            avatarUrl: '',
-        }
+const Main = () => {
+    const [collapsed, setCollapsed] = useState(false);
+    const [curMenu, setCurMenu] = useState({});
+
+    const lsjTabsRef = useRef();
+
+
+    const onCollapsedChange = (collapsed) => {
+        setCollapsed(collapsed);
     }
 
-    componentDidMount() {
-        this.init();
-    }
-
-    init = () => {
-        this.userInit();
-    }
-
-    userInit = () => {
-        userData.getUserData()
-            .then((userData) => {
-                if (userData && userData.avatarUrl) {
-                    this.setState({
-                        avatarUrl: userData.avatarUrl
-                    })
-                }
-            })
-    }
-
-    onCollapsedChange = (collapsed) => {
-        this.setState({
-            collapsed: collapsed
+    const onMenuSel = (menu) => {
+        setCurMenu(menu);
+        lsjTabsRef.current.addPane({
+            title: menu.domEvent.target.innerText,
+            key: menu.key,
         });
     }
 
-    render() {
-        return (
-            <Layout>
-                <LsjNavigate collapsed={this.state.collapsed}></LsjNavigate>
-                <Layout className="site-layout">
-                    <LsjHeader collapsed={this.state.collapsed} onCollapsedChange={this.onCollapsedChange}></LsjHeader>
-                    <LsjContent></LsjContent>
-                </Layout>
+    return (
+        <Layout>
+            <LsjNavigate collapsed={collapsed} onMenuSel={onMenuSel}></LsjNavigate>
+            <Layout className="site-layout">
+                <LsjHeader collapsed={collapsed} onCollapsedChange={onCollapsedChange}></LsjHeader>
+                <LsjTabs curRef={lsjTabsRef}></LsjTabs>
+                <LsjContent></LsjContent>
             </Layout>
-        );
-    }
+        </Layout>
+    );
 }
 
 export default Main;

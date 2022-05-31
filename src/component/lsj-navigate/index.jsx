@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 type MenuItem = Required<MenuProps>['items'][number];
 
 const LsjNavigate = (props) => {
-    // const {getCollapsed} = props;
+    const {onMenuSel} = props;
     const [collapsed, setCollapsed] = useState(props.collapsed);
     const [menuSelKey, setMenuSelKey] = useState([]);
     const [menuTreeList, setMenuTreeList] = useState([]);
@@ -78,6 +78,7 @@ const LsjNavigate = (props) => {
     }
 
     const onMenuClick = (item) => {
+        onMenuSel(item);
         setMenuSelKey([item.key]);
         navigate(item.key);
     }

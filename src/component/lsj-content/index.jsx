@@ -11,12 +11,11 @@ const LsjContent = () => {
         <Content
             className="site-layout-background"
             style={{
-                margin: '10px 10px',
+                // margin: '10px 10px',max-height
                 // padding: 10,
                 minHeight: 680,
             }}
         >
-            <LsjTabs></LsjTabs>
             <BaseRouter></BaseRouter>
         </Content>
     );
