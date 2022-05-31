@@ -1,10 +1,9 @@
 import {useRoutes} from "react-router-dom"
-import {Suspense, lazy} from "react";
+import {Suspense} from "react";
 import Login from "../page/Login";
 
 // const main = lazy(() => import("../page/main"));
 import Home from "../page/Home";
-import Main from "../page/main";
 import Default from "../page/default";
 const ROUTE_LIST = [
     {

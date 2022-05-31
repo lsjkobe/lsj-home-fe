@@ -1,14 +1,12 @@
-import './main.css'
 import {Layout} from 'antd';
 import React, {useRef, useState} from 'react';
-import LsjNavigate from "../../component/lsj-navigate";
-import LsjHeader from "../../component/lsj-header";
-import LsjContent from "../../component/lsj-content";
-import LsjTabs from "../../component/lsj-tabs";
+import LsjNavigate from "@/component/lsj-navigate";
+import LsjHeader from "@/component/lsj-header";
+import LsjContent from "@/component/lsj-content";
+import LsjTabs from "@/component/lsj-tabs";
 
-const Main = () => {
+const LsjLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const [curMenu, setCurMenu] = useState({});
 
     const lsjTabsRef = useRef();
 
@@ -18,7 +16,6 @@ const Main = () => {
     }
 
     const onMenuSel = (menu) => {
-        setCurMenu(menu);
         lsjTabsRef.current.addPane({
             title: menu.domEvent.target.innerText,
             key: menu.key,
@@ -37,4 +34,4 @@ const Main = () => {
     );
 }
 
-export default Main;
+export default LsjLayout;

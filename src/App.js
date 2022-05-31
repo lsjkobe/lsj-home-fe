@@ -1,9 +1,8 @@
 import './App.less';
 import {BrowserRouter} from "react-router-dom";
-import {BaseRouter} from "./route/root-route";
 import {RouteAuthEach} from "./route/route-auth";
 import AxiosHttp from "./common/axios-http";
-import Main from "./page/main";
+import LsjLayout from "@/component/layout/lsj-layout";
 
 AxiosHttp.init();
 
@@ -12,9 +11,9 @@ function App() {
         <div className="App">
             <div>
                 <BrowserRouter>
-                    <Main>
+                    <LsjLayout>
                         <RouteAuthEach></RouteAuthEach>
-                    </Main>
+                    </LsjLayout>
                 </BrowserRouter>
             </div>
         </div>

@@ -1,3 +1,4 @@
+import './lsj-header.css';
 import React, {useState, useEffect} from "react";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {Avatar, Badge} from "antd";

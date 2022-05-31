@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {Menu} from "antd";
 import Sider from "antd/es/layout/Sider";
 import MenuData from "../../data/menu-data";
