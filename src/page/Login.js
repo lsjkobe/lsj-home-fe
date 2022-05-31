@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Component} from "react";
-import UserHandler from "../common/user-handler";
+import UserHandler from "@/common/user-handler";
 
 export default class Login extends Component {
     state = {

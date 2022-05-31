@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {Avatar, Badge} from "antd";
 import {Header} from "antd/es/layout/layout";
-import userData from "../../data/user-data";
+import userData from "@/data/user-data";
 
 const LsjHeader = (props) => {
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {Content} from "antd/es/layout/layout";
-import {BaseRouter} from "../../route/root-route";
+import {BaseRouter} from "@/route/root-route";
 
 const LsjContent = () => {
 

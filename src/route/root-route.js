@@ -1,6 +1,6 @@
 import {useRoutes} from "react-router-dom"
 import {Suspense} from "react";
-import Login from "../page/Login";
+import Login from "@/page/Login";
 
 // const main = lazy(() => import("../page/main"));
 import Home from "../page/Home";

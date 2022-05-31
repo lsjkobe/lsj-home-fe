@@ -1,7 +1,7 @@
 import {Outlet, useLocation} from "react-router-dom";
 import {useEffect, useState} from 'react'
 import {getRouteByPath} from "./root-route";
-import UserHandler from "../common/user-handler";
+import UserHandler from "@/common/user-handler";
 
 const RouteAuthEach = () => {
     const location = useLocation()

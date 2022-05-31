@@ -2,7 +2,7 @@ import "./lsj-tabs.css";
 import {Tabs} from "antd";
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useNavigate} from 'react-router-dom'
-import {getRouteByPath} from "../../route/root-route";
+import {getRouteByPath} from "@/route/root-route";
 
 const {TabPane} = Tabs;
 

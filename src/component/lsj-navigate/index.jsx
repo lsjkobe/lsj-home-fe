@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
 import {Menu} from "antd";
 import Sider from "antd/es/layout/Sider";
-import MenuData from "../../data/menu-data";
-import MenuTree from "../../model/MenuTree";
+import MenuData from "@/data/menu-data";
+import MenuTree from "@/model/MenuTree";
 import type {MenuProps} from "antd";
-import Icon from "../../common/icon";
+import Icon from "@/common/icon";
 import { useNavigate } from 'react-router-dom'
 
 type MenuItem = Required<MenuProps>['items'][number];
