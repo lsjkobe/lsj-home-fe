@@ -9,6 +9,7 @@ const LsjLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
 
     const lsjTabsRef = useRef();
+    const lsjNavigateRef = useRef();
 
 
     const onCollapsedChange = (collapsed) => {
@@ -22,12 +23,16 @@ const LsjLayout = () => {
         });
     }
 
+    const onChangePane = (paneKey) => {
+        lsjNavigateRef.current.setMenuSelKey(paneKey);
+    }
+
     return (
         <Layout>
-            <LsjNavigate collapsed={collapsed} onMenuSel={onMenuSel}></LsjNavigate>
+            <LsjNavigate collapsed={collapsed} onMenuSel={onMenuSel} curRef={lsjNavigateRef}></LsjNavigate>
             <Layout className="site-layout">
                 <LsjHeader collapsed={collapsed} onCollapsedChange={onCollapsedChange}></LsjHeader>
-                <LsjTabs curRef={lsjTabsRef}></LsjTabs>
+                <LsjTabs curRef={lsjTabsRef} onChangePane={onChangePane}></LsjTabs>
                 <LsjContent></LsjContent>
             </Layout>
         </Layout>

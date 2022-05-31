@@ -59,6 +59,7 @@ const LsjTabs = (props) => {
     //tabs切换
     const onChange = (key) => {
         setCurPaneKey(key);
+        props.onChangePane(key);
     }
 
     //编辑

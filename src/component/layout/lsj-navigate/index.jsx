@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useImperativeHandle} from "react";
 import {Menu} from "antd";
 import Sider from "antd/es/layout/Sider";
 import MenuData from "@/data/menu-data";
 import MenuTree from "@/model/MenuTree";
 import type {MenuProps} from "antd";
 import Icon from "@/common/icon";
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const LsjNavigate = (props) => {
-    const {onMenuSel} = props;
+    const {onMenuSel, curRef} = props;
     const [collapsed, setCollapsed] = useState(props.collapsed);
     const [menuSelKey, setMenuSelKey] = useState([]);
     const [menuTreeList, setMenuTreeList] = useState([]);
@@ -27,6 +27,16 @@ const LsjNavigate = (props) => {
     const init = () => {
         menuInit();
     }
+
+    useImperativeHandle(curRef, () => (
+        {
+            setMenuSelKey: (newKey) => {
+                if (newKey) {
+                    setMenuSelKey(newKey);
+                }
+            }
+        }
+    ))
 
     const getItem = (
         label: React.ReactNode,
@@ -96,7 +106,6 @@ const LsjNavigate = (props) => {
         </Sider>
     );
 }
-
 
 
 export default LsjNavigate;
