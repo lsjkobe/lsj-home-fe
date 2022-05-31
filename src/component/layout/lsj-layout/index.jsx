@@ -1,9 +1,9 @@
 import {Layout} from 'antd';
 import React, {useRef, useState} from 'react';
-import LsjNavigate from "@/component/lsj-navigate";
-import LsjHeader from "@/component/lsj-header";
-import LsjContent from "@/component/lsj-content";
-import LsjTabs from "@/component/lsj-tabs";
+import LsjNavigate from "@/component/layout/lsj-navigate";
+import LsjHeader from "@/component/layout/lsj-header";
+import LsjContent from "@/component/layout/lsj-content";
+import LsjTabs from "@/component/layout/lsj-tabs";
 
 const LsjLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
