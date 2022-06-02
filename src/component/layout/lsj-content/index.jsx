@@ -1,6 +1,6 @@
 import React from "react";
 import {Content} from "antd/es/layout/layout";
-import {BaseRouter} from "@/route/root-route";
+import {ContentRouter} from "@/route/root-route";
 
 const LsjContent = () => {
 
@@ -11,7 +11,7 @@ const LsjContent = () => {
                 minHeight: 680,
             }}
         >
-            <BaseRouter></BaseRouter>
+            <ContentRouter></ContentRouter>
         </Content>
     );
 }

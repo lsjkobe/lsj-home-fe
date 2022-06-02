@@ -14,9 +14,9 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        axios.get(process.env.REACT_APP_SERVER_URL + '/home/page/space/list').then(res => {
-
-        });
+        // axios.get(process.env.REACT_APP_SERVER_URL + '/home/page/space/list').then(res => {
+        //
+        // });
     }
 
     // ...

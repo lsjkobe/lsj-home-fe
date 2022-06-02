@@ -15,7 +15,7 @@ export default class Login extends Component {
             this.state.isLogging = true;
             axios.get(process.env.REACT_APP_SERVER_URL + "?ticket=" + ticket)
                 .then(r => {
-                    console.info(r);
+                    console.info('登录返回' + JSON.stringify(r));
                     if (r && r.data && r.data[process.env.REACT_APP_PARAM_TOKEN]) {
                         const token = r.data[process.env.REACT_APP_PARAM_TOKEN];
                         const userData = r.data[process.env.REACT_APP_PARAM_USER];

@@ -9,7 +9,7 @@ const {TabPane} = Tabs;
 const LsjTabs = (props) => {
     const {curRef} = props;
 
-    const [curPaneKey, setCurPaneKey] = useState('/');
+    const [curPaneKey, setCurPaneKey] = useState('/default');
     const [panes, setPanes] = useState([]);
 
     const navigate = useNavigate();
@@ -17,14 +17,7 @@ const LsjTabs = (props) => {
     useImperativeHandle(curRef, () => (
         {
             addPane: (newPane) => {
-                if (newPane.key) {
-                    if (!isExistKey(newPane.key)) {
-                        setPanes([
-                            ...panes, newPane
-                        ]);
-                    }
-                    setCurPaneKey(newPane.key);
-                }
+                addNewPane(newPane);
             }
         }
     ))
@@ -32,13 +25,12 @@ const LsjTabs = (props) => {
     useEffect(() => {
         let route = getRouteByPath(curPaneKey);
         if (route) {
-            setPanes([
-                {
-                    title: route.name,
-                    key: route.path,
-                    closable: false
-                }, ...panes
-            ]);
+            const defaultPane = {
+                title: route.name,
+                key: route.path,
+                closable: false
+            }
+            addNewPane(defaultPane);
         }
     }, []);
 
@@ -46,6 +38,17 @@ const LsjTabs = (props) => {
     useEffect(() => {
         navigate(curPaneKey);
     }, [curPaneKey]);
+
+    const addNewPane = (newPane) => {
+        if (newPane.key) {
+            if (!isExistKey(newPane.key)) {
+                setPanes([
+                    ...panes, newPane
+                ]);
+            }
+            setCurPaneKey(newPane.key);
+        }
+    }
 
     const isExistKey = (checkKey) => {
         for (let pane of panes) {

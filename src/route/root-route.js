@@ -1,33 +1,12 @@
 import {useRoutes} from "react-router-dom"
 import {Suspense} from "react";
-import Login from "@/page/Login";
-
 // const main = lazy(() => import("../page/main"));
-import Home from "../page/Home";
-import Default from "../page/default";
-const ROUTE_LIST = [
-    {
-        path: "/",
-        name: "默认",
-        auth: false,
-        element: <Default />,
-    },
-    {
-        path: "/group",
-        auth: true,
-        element: <Home/>,
-    },
-    {
-        path: "/login",
-        auth: false,
-        element: <Login/>,
-    },
-    {
-        path: "/role",
-        auth: false,
-        element: <Login/>,
-    },
-]
+import CONTENT_ROUTE from "@/route/content-route";
+import BASE_ROUTE from "@/route/base-route";
+
+const CONTENT_ROUTE_LIST = CONTENT_ROUTE;
+
+const BASE_ROUTE_LIST = BASE_ROUTE;
 
 // 路由处理方式
 const generateRouter = (routers: any) => {
@@ -35,9 +14,7 @@ const generateRouter = (routers: any) => {
         if (item.children) {
             item.children = generateRouter(item.children)
         }
-        item.element = <Suspense fallback={
-            <div>加载中...</div>
-        }>
+        item.element = <Suspense fallback={<div>加载中...</div>}>
             {/* 把懒加载的异步路由变成组件装载进去 */}
             {item.element}
         </Suspense>
@@ -57,9 +34,10 @@ const getRouteCommon = (routeList: Array, path: string) => {
 }
 
 const getRouteByPath = (path: string) => {
-    return getRouteCommon(ROUTE_LIST, path);
+    return getRouteCommon(CONTENT_ROUTE_LIST, path);
 }
 
-const BaseRouter = () => useRoutes(generateRouter(ROUTE_LIST))
+const ContentRouter = () => useRoutes(generateRouter(CONTENT_ROUTE_LIST))
+const BaseRouter = () => useRoutes(BASE_ROUTE_LIST)
 
-export {BaseRouter, getRouteByPath}
+export {BaseRouter, ContentRouter, getRouteByPath}
