@@ -1,12 +1,19 @@
 import Default from "@/page/default";
 import Home from "@/page/Home";
+import MenuList from "@/page/menu/list";
 
 const CONTENT_ROUTE = [
     {
         path: "/default",
         name: "默认",
         auth: true,
-        element: <Home/>,
+        element: <Default/>,
+    },
+    {
+        path: "/menu",
+        name: "菜单",
+        auth: true,
+        element: <MenuList/>,
     },
     {
         path: "/group",

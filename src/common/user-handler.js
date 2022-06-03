@@ -1,4 +1,9 @@
 class UserHandler {
+
+    static CONST = {
+        KEY_PERM_LIST: 'KEY_PERM_LIST',
+    }
+
     constructor() {
     }
 
@@ -27,6 +32,22 @@ class UserHandler {
 
     static getToken = () => {
         return localStorage.getItem(process.env.REACT_APP_PARAM_TOKEN);
+    }
+
+    static savePermList = (permList = []) => {
+        localStorage.setItem(this.CONST.KEY_PERM_LIST, JSON.stringify(permList));
+    }
+
+    static getPermList = () => {
+        let permListStr = localStorage.getItem(this.CONST.KEY_PERM_LIST);
+        if (permListStr) {
+            return JSON.parse(permListStr);
+        }
+        return [];
+    }
+
+    static delPermList = () => {
+        localStorage.removeItem(this.CONST.KEY_PERM_LIST);
     }
 }
 
