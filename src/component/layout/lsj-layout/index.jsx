@@ -28,7 +28,7 @@ const LsjLayout = () => {
     }
 
     return (
-        <Layout>
+        <Layout style={{height: '100vh'}}>
             <LsjNavigate collapsed={collapsed} onMenuSel={onMenuSel} curRef={lsjNavigateRef}></LsjNavigate>
             <Layout className="site-layout">
                 <LsjHeader collapsed={collapsed} onCollapsedChange={onCollapsedChange}></LsjHeader>

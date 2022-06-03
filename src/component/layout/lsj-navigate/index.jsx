@@ -20,13 +20,55 @@ const LsjNavigate = (props) => {
     }, [props.collapsed])
 
     useEffect(() => {
+        const init = () => {
+            menuInit();
+        }
+
+        const menuInit = () => {
+            MenuData.getMenuTreeList()
+                .then(menuTreeListResp => {
+                    let menuTreeList = menuTreeToShow(menuTreeListResp);
+                    setMenuTreeList(menuTreeList);
+                    // setMenuSelKey(menuTreeListResp[0].menuPath)
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+
+        const menuTreeToShow = (menuTreeListResp: Array<MenuTree>) => {
+            let items: MenuProps['items'] = [];
+            for (let menuTree of menuTreeListResp) {
+                let item = menuTreeSingleToShow(menuTree);
+                items.push(item);
+            }
+            return items;
+        }
+
+        const menuTreeSingleToShow = (menuTree: MenuTree) => {
+            let item = getItem(menuTree.menuName, menuTree.menuPath, <Icon icon={menuTree.menuIcon}/>);
+            if (menuTree.children && menuTree.children.length > 0) {
+                item.children = [];
+                for (let child of menuTree.children) {
+                    let childItem = menuTreeSingleToShow(child);
+                    item.children.push(childItem);
+                }
+            }
+            return item;
+        }
+
         init();
     }, [])
 
-
-    const init = () => {
-        menuInit();
+    const getItem = (
+        label: React.ReactNode, key: React.Key,
+        icon?: React.ReactNode, children?: MenuItem[],
+        type?: 'group'): MenuItem => {
+        return {
+            key, icon, children, label, type,
+        };
     }
+
 
     useImperativeHandle(curRef, () => (
         {
@@ -37,55 +79,6 @@ const LsjNavigate = (props) => {
             }
         }
     ))
-
-    const getItem = (
-        label: React.ReactNode,
-        key: React.Key,
-        icon?: React.ReactNode,
-        children?: MenuItem[],
-        type?: 'group'): MenuItem => {
-        return {
-            key,
-            icon,
-            children,
-            label,
-            type,
-        };
-    }
-
-    const menuInit = () => {
-        MenuData.getMenuTreeList()
-            .then(menuTreeListResp => {
-                let menuTreeList = menuTreeToShow(menuTreeListResp);
-                setMenuTreeList(menuTreeList);
-                setMenuSelKey(menuTreeListResp[0].menuPath)
-
-            })
-            .catch(e => {
-                console.log(e);
-            })
-    }
-
-    const menuTreeToShow = (menuTreeListResp: Array<MenuTree>) => {
-        let items: MenuProps['items'] = [];
-        for (let menuTree of menuTreeListResp) {
-            let item = menuTreeSingleToShow(menuTree);
-            items.push(item);
-        }
-        return items;
-    }
-
-    const menuTreeSingleToShow = (menuTree: MenuTree) => {
-        let item = getItem(menuTree.menuName, menuTree.menuPath, <Icon icon={menuTree.menuIcon}/>);
-        if (menuTree.children && menuTree.children.length > 0) {
-            item.children = [];
-            for (let child of menuTree.children) {
-                let childItem = menuTreeSingleToShow(child);
-                item.children.push(childItem);
-            }
-        }
-        return item;
-    }
 
     const onMenuClick = (item) => {
         onMenuSel(item);
