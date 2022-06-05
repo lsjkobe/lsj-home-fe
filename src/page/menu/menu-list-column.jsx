@@ -27,8 +27,8 @@ const menuListColumns = [
     },
     {
         title: '菜单类型',
-        dataIndex: 'menuType',
-        key: 'menuType',
+        dataIndex: 'menuTypeValue',
+        key: 'menuTypeValue',
         width: '15%',
     },
     {

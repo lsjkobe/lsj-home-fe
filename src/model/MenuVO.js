@@ -5,6 +5,7 @@ export default class MenuTree {
     menuPath: string;
     perms: string;
     menuType: number;
+    menuTypeValue: string;
     menuIcon: string;
     children: Array<MenuTree>;
 

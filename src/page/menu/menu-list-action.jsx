@@ -1,24 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Button, Space} from "antd";
 import PermButton from "@/component/button/perm-button";
-import UserData from "@/data/user-data";
 
 const MenuListAction = () => {
-    const [permList, setPermList] = useState([]);
-
-    useEffect(() => {
-        UserData.getPermList()
-            .then(permList => {
-                setPermList(permList);
-            })
-    }, []);
 
     return (
         <Space size="middle">
-            <PermButton perm={'rbac:menu:edit'} permList={permList}>
+            <PermButton perm={'rbac:menu:add'}>
+                <Button type="primary" size={"small"}>新增</Button>
+            </PermButton>
+            <PermButton perm={'rbac:menu:edit'}>
                 <Button type="primary" size={"small"}>编辑</Button>
             </PermButton>
-            <PermButton perm={'rbac:menu:del'} permList={permList}>
+            <PermButton perm={'rbac:menu:del'}>
                 <Button type="primary" size={"small"} danger>刪除</Button>
             </PermButton>
         </Space>

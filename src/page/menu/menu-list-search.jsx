@@ -87,7 +87,12 @@ const AdvancedSearchForm = (props) => {
             >
                 <Row style={{margin: 0}} gutter={24}>{getFormItems()}</Row>
                 <Row>
-                    <Col span={24} style={{textAlign: 'right',}}>
+                    <Col span={12} style={{textAlign: 'left',}}>
+                        <Space>
+                            <Button type="primary">新增</Button>
+                        </Space>
+                    </Col>
+                    <Col span={12} style={{textAlign: 'right',}}>
                         <Space>
                             <Button type="primary" htmlType="submit">查询</Button>
                             <Button onClick={() => {
