@@ -15,10 +15,10 @@ const MenuListAction = () => {
 
     return (
         <Space size="middle">
-            <PermButton perm={'test'} permList={permList}>
+            <PermButton perm={'rbac:menu:edit'} permList={permList}>
                 <Button type="primary" size={"small"}>编辑</Button>
             </PermButton>
-            <PermButton perm={'test1'} permList={permList}>
+            <PermButton perm={'rbac:menu:del'} permList={permList}>
                 <Button type="primary" size={"small"} danger>刪除</Button>
             </PermButton>
         </Space>

@@ -1,4 +1,5 @@
 export default class MenuTree {
+    key: string;
     id: number;
     menuName: string;
     menuPath: string;

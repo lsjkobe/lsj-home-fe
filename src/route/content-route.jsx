@@ -10,10 +10,10 @@ const CONTENT_ROUTE = [
         element: <Default/>,
     },
     {
-        path: "/menu",
-        name: "菜单",
+        path: "/menu/list",
+        name: "菜单列表",
         auth: true,
-        element: <MenuList/>,
+        element: <MenuList/>
     },
     {
         path: "/group",

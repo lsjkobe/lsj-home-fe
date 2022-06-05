@@ -2,46 +2,53 @@ import React, {useEffect, useState} from 'react';
 import {Table} from 'antd';
 import ListUtil from "@/util/list-util";
 import {menuListColumns} from "@/page/menu/menu-list-column";
-
-const data = [];
-
-for (let i = 0; i < 1; i++) {
-    data.push({
-        key: i,
-        name: `Edrward ${i}`,
-        age: 32,
-        address: `London Pa1rk no. ${i}`,
-    });
-}
+import MenuData from "@/data/menu-data";
+import MenuListSearch from "@/page/menu/menu-list-search";
 
 const MenuList = () => {
 
     const [scrollY, setScrollY] = useState('70vh');
-    // const [curPage, setCurPage] = useState(1);
+    const [menuDataList, setMenuDataList] = useState([]);
 
     useEffect(() => {
+        function initData() {
+            MenuData.queryMenuList({})
+                .then(menuList => {
+                    doSetMenuDataList(menuList);
+                })
+        }
+
         const init = () => {
             setScrollY(ListUtil.calListHeight());
+            initData();
         }
         init();
     }, []);
 
-    const onTableChange = (pagination, filters, sorter, extra) => {
-        if (extra.action === 'paginate') {
-            // setCurPage(pagination.current);
+    const doSetMenuDataList = (menuList) => {
+        for (let menuVo of menuList) {
+            menuVo.key = menuVo.id;
         }
+        setMenuDataList(menuList);
+    }
+
+    const doSearch = (menuList) => {
+        doSetMenuDataList(menuList);
     }
 
     return (
-        <Table
-            columns={menuListColumns}
-            dataSource={data}
-            onChange={onTableChange}
-            scroll={{
-                x: 'max-content',
-                y: scrollY,
-            }}
-        />
+        <div>
+            <MenuListSearch doSearch={doSearch}></MenuListSearch>
+            <Table
+                rowSelection={{type: 'checkbox'}}
+                columns={menuListColumns}
+                dataSource={menuDataList}
+                scroll={{
+                    // x: 'max-content',
+                    y: scrollY,
+                }}
+            />
+        </div>
     );
 };
 
