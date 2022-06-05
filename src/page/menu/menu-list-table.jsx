@@ -1,15 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {Table, message} from 'antd';
-import ListUtil from "@/util/list-util";
-import MenuData from "@/data/menu-data";
-import MenuListHeader from "@/page/menu/menu-list-header";
+import {Table} from "antd";
+import React, {useEffect, useState} from "react";
 import MenuListAction from "@/page/menu/menu-list-action";
+import MenuData from "@/data/menu-data";
+import ListUtil from "@/util/list-util";
 
-const MenuList = () => {
+const MenuListTable = (props) => {
 
     const [scrollY, setScrollY] = useState('70vh');
-    const [menuDataList, setMenuDataList] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [menuDataList, setMenuDataList] = useState([]);
+
+    useEffect(() => {
+        const init = () => {
+            setScrollY(ListUtil.calListHeight());
+            initRender();
+            initData();
+        }
+        init();
+    }, []);
 
     const initRender = () => {
         const initColumns = () => {
@@ -48,9 +56,7 @@ const MenuList = () => {
                     key: 'operation',
                     width: '20%',
                     render: () => {
-                        return <MenuListAction btnCallBack={{
-                            doAddCB: doAdd
-                        }}></MenuListAction>
+                        return <MenuListAction {...props}></MenuListAction>
                     },
                 },
             ]);
@@ -59,21 +65,17 @@ const MenuList = () => {
         initColumns();
     }
 
-    useEffect(() => {
-        function initData() {
-            MenuData.queryMenuList({})
-                .then(menuList => {
-                    doSetMenuDataList(menuList);
-                })
-        }
+    function initData() {
+        doQuery();
+    }
 
-        const init = () => {
-            setScrollY(ListUtil.calListHeight());
-            initRender();
-            initData();
-        }
-        init();
-    }, []);
+
+    const doQuery = () => {
+        MenuData.queryMenuList({})
+            .then(menuList => {
+                doSetMenuDataList(menuList);
+            })
+    }
 
     const doSetMenuDataList = (menuList) => {
         for (let menuVo of menuList) {
@@ -82,30 +84,18 @@ const MenuList = () => {
         setMenuDataList(menuList);
     }
 
-    const doSearch = (menuList) => {
-        doSetMenuDataList(menuList);
-    }
-
-    const doAdd = () => {
-        message.info('This is a normal message').then();
-    }
-
     return (
-        <div>
-            <MenuListHeader doSearchCallBack={doSearch} btnCallBack={{
-                doSearchCB: doSearch, doAddCB: doAdd
-            }}></MenuListHeader>
-            <Table
-                rowSelection={{type: 'checkbox'}}
-                columns={columns}
-                dataSource={menuDataList}
-                scroll={{
-                    // x: 'max-content',
-                    y: scrollY,
-                }}
-            />
-        </div>
+        <Table
+            rowSelection={{type: 'checkbox'}}
+            columns={columns
+            }
+            dataSource={menuDataList}
+            scroll={{
+                // x: 'max-content',
+                y: scrollY,
+            }}
+        />
     );
-};
+}
 
-export default MenuList;
+export default MenuListTable;

@@ -6,7 +6,7 @@ import MenuData from "@/data/menu-data";
 const {Option} = Select;
 
 const AdvancedSearchForm = (props) => {
-    const {doSearch} = props;
+    const {doSearchCB, doAddCB} = props.btnCallBack;
     const [appDataList, setAppDataList] = useState([]);
 
     const [form] = Form.useForm();
@@ -76,7 +76,7 @@ const AdvancedSearchForm = (props) => {
         MenuData.queryMenuList(query)
             .then(menuList => {
                 console.log('接口返回', menuList);
-                doSearch(menuList);
+                doSearchCB(menuList);
             });
     }
 
@@ -89,7 +89,7 @@ const AdvancedSearchForm = (props) => {
                 <Row>
                     <Col span={12} style={{textAlign: 'left',}}>
                         <Space>
-                            <Button type="primary">新增</Button>
+                            <Button type="primary" onClick={doAddCB}>新增</Button>
                         </Space>
                     </Col>
                     <Col span={12} style={{textAlign: 'right',}}>
@@ -106,10 +106,10 @@ const AdvancedSearchForm = (props) => {
     );
 };
 
-const MenuListSearch = (props) => (
+const MenuListHeader = (props) => (
     <div>
         <AdvancedSearchForm {...props}/>
     </div>
 );
 
-export default MenuListSearch;
+export default MenuListHeader;

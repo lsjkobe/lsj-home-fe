@@ -2,12 +2,12 @@ import React from "react";
 import {Button, Space} from "antd";
 import PermButton from "@/component/button/perm-button";
 
-const MenuListAction = () => {
-
+const MenuListAction = (props) => {
+    const {doAddCB} = props.btnCallBack;
     return (
         <Space size="middle">
             <PermButton perm={'rbac:menu:add'}>
-                <Button type="primary" size={"small"}>新增</Button>
+                <Button type="primary" size={"small"} onClick={doAddCB}>新增</Button>
             </PermButton>
             <PermButton perm={'rbac:menu:edit'}>
                 <Button type="primary" size={"small"}>编辑</Button>
