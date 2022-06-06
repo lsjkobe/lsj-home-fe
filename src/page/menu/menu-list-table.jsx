@@ -1,14 +1,22 @@
 import {Table} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useImperativeHandle, useState} from "react";
 import MenuListAction from "@/page/menu/menu-list-action";
 import MenuData from "@/data/menu-data";
 import ListUtil from "@/util/list-util";
 
 const MenuListTable = (props) => {
-
+    const {curRef} = props;
     const [scrollY, setScrollY] = useState('70vh');
     const [columns, setColumns] = useState([]);
     const [menuDataList, setMenuDataList] = useState([]);
+
+    useImperativeHandle(curRef, () => (
+        {
+            doQueryRef: (query) => {
+                _doQuery(query);
+            }
+        }
+    ))
 
     useEffect(() => {
         const init = () => {
@@ -55,8 +63,8 @@ const MenuListTable = (props) => {
                     title: 'Action',
                     key: 'operation',
                     width: '20%',
-                    render: () => {
-                        return <MenuListAction {...props}></MenuListAction>
+                    render: (record) => {
+                        return <MenuListAction {...props} menuData={record}></MenuListAction>
                     },
                 },
             ]);
@@ -66,12 +74,12 @@ const MenuListTable = (props) => {
     }
 
     function initData() {
-        doQuery();
+        _doQuery();
     }
 
 
-    const doQuery = () => {
-        MenuData.queryMenuList({})
+    const _doQuery = (query = {}) => {
+        MenuData.queryMenuList(query)
             .then(menuList => {
                 doSetMenuDataList(menuList);
             })
@@ -87,8 +95,7 @@ const MenuListTable = (props) => {
     return (
         <Table
             rowSelection={{type: 'checkbox'}}
-            columns={columns
-            }
+            columns={columns}
             dataSource={menuDataList}
             scroll={{
                 // x: 'max-content',

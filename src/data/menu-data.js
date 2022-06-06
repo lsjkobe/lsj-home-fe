@@ -7,9 +7,7 @@ export default class MenuData {
     static urls = {
         getMenuTree: RBAC_CONST.RBAC_API_PREFIX + "/auth/get/menuTree",
         queryMenuList: RBAC_CONST.RBAC_API_PREFIX + "/menu/query/list",
-    }
-
-    constructor() {
+        delById: RBAC_CONST.RBAC_API_PREFIX + "/menu/del/id/",
     }
 
     static getMenuTreeList = (): Promise<Array<MenuTree>> => {
@@ -24,11 +22,11 @@ export default class MenuData {
         })
     }
 
-    static getMenuList = () : Promise<Array<MenuVO>> => {
+    static delById = (id) : Promise<string> => {
         return new Promise((resolve, reject) => {
-            ApiAxios.get(this.urls.queryMenuList)
-                .then((menuList: Array<MenuVO>) => {
-                    resolve(menuList);
+            ApiAxios.post(this.urls.delById + id)
+                .then((res: string) => {
+                    resolve(res);
                 })
                 .catch(e => {
                     reject(e);

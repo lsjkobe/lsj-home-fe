@@ -1,15 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useState} from 'react';
 import {Form, Row, Col, Input, Button, Select, Space} from 'antd';
 import ApplicationData from "@/data/application-data";
-import MenuData from "@/data/menu-data";
 
 const {Option} = Select;
 
 const AdvancedSearchForm = (props) => {
+    const {curRef} = props;
     const {doSearchCB, doAddCB} = props.btnCallBack;
     const [appDataList, setAppDataList] = useState([]);
 
     const [form] = Form.useForm();
+
+    useImperativeHandle(curRef, () => (
+        {
+            doSearchRef: () => {
+                doSearchLogic(form.getFieldsValue())
+            }
+        }
+    ))
 
     useEffect(() => {
         const asyncInitData = async () => {
@@ -33,7 +41,7 @@ const AdvancedSearchForm = (props) => {
         }
 
         init();
-    }, [])
+    }, [form])
 
     const getFormItems = () => {
         const children = [];
@@ -73,11 +81,7 @@ const AdvancedSearchForm = (props) => {
     };
 
     const doSearchLogic = (query) => {
-        MenuData.queryMenuList(query)
-            .then(menuList => {
-                console.log('接口返回', menuList);
-                doSearchCB(menuList);
-            });
+        doSearchCB(query);
     }
 
     return (
