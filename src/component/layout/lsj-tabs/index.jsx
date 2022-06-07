@@ -37,6 +37,7 @@ const LsjTabs = (props) => {
     // tabs切换时跳转
     useEffect(() => {
         navigate(curPaneKey);
+        props.onChangePane(curPaneKey);
     }, [curPaneKey]);
 
     const addNewPane = (newPane) => {
@@ -62,7 +63,6 @@ const LsjTabs = (props) => {
     //tabs切换
     const onChange = (key) => {
         setCurPaneKey(key);
-        props.onChangePane(key);
     }
 
     //编辑
