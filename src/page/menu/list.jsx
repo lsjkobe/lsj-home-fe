@@ -3,6 +3,7 @@ import {message} from 'antd';
 import MenuListHeader from "@/page/menu/menu-list-header";
 import MenuListTable from "@/page/menu/menu-list-table";
 import MenuData from "@/data/menu-data";
+import ModalAddMenu from "@/page/menu/modal/add-menu/modal-add-menu";
 
 const MenuList = () => {
 
@@ -19,7 +20,7 @@ const MenuList = () => {
 
     const doSearch = (query) => {
         if (menuListTableRef.current) {
-            menuListTableRef.current.doQueryRef(query);
+            menuListTableRef.current?.doQueryRef(query);
         }
     }
 
@@ -37,14 +38,17 @@ const MenuList = () => {
     }
 
     return (
-        <div>
-            <MenuListHeader curRef={menuListHeaderRef} btnCallBack={{
-                doSearchCB: doSearch, doAddCB: doAdd
-            }}></MenuListHeader>
-            <MenuListTable curRef={menuListTableRef} btnCallBack={{
-                doAddCB: doAdd, doDelCB: doDelOne
-            }}> </MenuListTable>
-        </div>
+        <>
+            <div>
+                <MenuListHeader curRef={menuListHeaderRef} btnCallBack={{
+                    doSearchCB: doSearch, doAddCB: doAdd
+                }}></MenuListHeader>
+                <MenuListTable curRef={menuListTableRef} btnCallBack={{
+                    doAddCB: doAdd, doDelCB: doDelOne
+                }}> </MenuListTable>
+            </div>
+            <ModalAddMenu></ModalAddMenu>
+        </>
     );
 };
 
