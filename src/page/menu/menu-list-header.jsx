@@ -93,7 +93,9 @@ const AdvancedSearchForm = (props) => {
                 <Row>
                     <Col span={12} style={{textAlign: 'left',}}>
                         <Space>
-                            <Button type="primary" onClick={doAddCB}>新增</Button>
+                            <Button type="primary" onClick={() => {
+                                doAddCB()
+                            }}>新增</Button>
                         </Space>
                     </Col>
                     <Col span={12} style={{textAlign: 'right',}}>

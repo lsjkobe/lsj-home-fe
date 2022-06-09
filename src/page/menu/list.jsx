@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {message} from 'antd';
 import MenuListHeader from "@/page/menu/menu-list-header";
 import MenuListTable from "@/page/menu/menu-list-table";
@@ -6,13 +6,14 @@ import MenuData from "@/data/menu-data";
 import ModalAddMenu from "@/page/menu/modal/add-menu/modal-add-menu";
 
 const MenuList = () => {
-
+    const [addMenuVisible, setAddMenuVisible] = useState(false);
+    const [menuSel, setMenuSel] = useState();
     const menuListHeaderRef = useRef();
     const menuListTableRef = useRef();
+    const modalAddMenuRef = useRef();
 
 
     useEffect(() => {
-
         const init = () => {
         }
         init();
@@ -25,7 +26,8 @@ const MenuList = () => {
     }
 
     const doAdd = (menuId) => {
-        message.info('This is a normal message').then();
+        setAddMenuVisible(true);
+        setMenuSel(menuId);
     }
 
     const doDelOne = (menuId) => {
@@ -33,8 +35,21 @@ const MenuList = () => {
             .then(res => {
                 message.info(res).then(() => {
                 });
-                menuListHeaderRef.current.doSearchRef();
+                menuListHeaderRef.current?.doSearchRef();
             });
+    }
+
+    const getHandles = () => {
+        return {
+            handleOk: () => {
+                modalAddMenuRef.current?.submitRef().then(() => {
+                    setAddMenuVisible(false);
+                });
+            },
+            handleCancel: () => {
+                setAddMenuVisible(false);
+            }
+        }
     }
 
     return (
@@ -47,7 +62,8 @@ const MenuList = () => {
                     doAddCB: doAdd, doDelCB: doDelOne
                 }}> </MenuListTable>
             </div>
-            <ModalAddMenu></ModalAddMenu>
+            <ModalAddMenu curRef={modalAddMenuRef} visible={addMenuVisible} parentMenuId={menuSel}
+                          handles={getHandles()}></ModalAddMenu>
         </>
     );
 };

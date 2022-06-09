@@ -1,26 +1,27 @@
 import {Modal} from 'antd';
-import React, {useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import Draggable from 'react-draggable';
 import ModalAddMenuForm from "@/page/menu/modal/add-menu/modal-add-menu-form";
 
-const ModalAddMenu = () => {
-    const [visible, setVisible] = useState(true);
+const ModalAddMenu = (props) => {
+    const {curRef, visible, parentMenuId} = props;
+    const {handleOk, handleCancel} = props?.handles;
     const [disabled, setDisabled] = useState(false);
     const [bounds, setBounds] = useState({
         left: 0, top: 0, bottom: 0, right: 0,
     });
     //拖拽
     const draggableRef = useRef(null);
+    //拖拽
+    const addMenuFormRef = useRef();
 
-    const handleOk = (e) => {
-        console.log(e);
-        setVisible(false);
-    };
-
-    const handleCancel = (e) => {
-        console.log(e);
-        setVisible(false);
-    };
+    useImperativeHandle(curRef, () => (
+        {
+            async submitRef() {
+                addMenuFormRef.current?.submitRef();
+            }
+        }
+    ))
 
     /**
      * 拖拽调用.
@@ -65,8 +66,7 @@ const ModalAddMenu = () => {
 
     return (
         <Modal
-            title={getTitle()}
-            visible={visible} onOk={handleOk} onCancel={handleCancel} okText="提交" cancelText="取消"
+            title={getTitle()} visible={visible} onOk={handleOk} onCancel={handleCancel} okText="提交" cancelText="取消"
             modalRender={(modal) => (
                 <Draggable disabled={disabled} bounds={bounds}
                            onStart={(event, uiData) => onStart(event, uiData)}>
@@ -74,7 +74,7 @@ const ModalAddMenu = () => {
                 </Draggable>
             )}
         >
-            <ModalAddMenuForm></ModalAddMenuForm>
+            <ModalAddMenuForm curRef={addMenuFormRef} defaultMenuId={parentMenuId}></ModalAddMenuForm>
         </Modal>
     );
 };

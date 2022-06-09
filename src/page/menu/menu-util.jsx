@@ -16,7 +16,6 @@ const toTreeSelData = (menu: MenuVO) => {
 }
 
 export const transToTreeSelData = (menuList: Array<MenuVO>) => {
-    console.info('');
     let items = [];
     for (let menu of menuList) {
         let item = toTreeSelData(menu);
