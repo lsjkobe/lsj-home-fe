@@ -86,10 +86,17 @@ const MenuListTable = (props) => {
     }
 
     const doSetMenuDataList = (menuList) => {
+        doSetMenuDataKey(menuList);
+        setMenuDataList(menuList);
+    }
+
+    const doSetMenuDataKey = (menuList) => {
         for (let menuVo of menuList) {
             menuVo.key = menuVo.id;
+            if (menuVo.children) {
+                doSetMenuDataKey(menuVo.children);
+            }
         }
-        setMenuDataList(menuList);
     }
 
     return (
