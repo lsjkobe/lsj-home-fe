@@ -8,6 +8,20 @@ export default class MenuData {
         getMenuTree: RBAC_CONST.RBAC_API_PREFIX + "/auth/get/menuTree",
         queryMenuList: RBAC_CONST.RBAC_API_PREFIX + "/menu/query/list",
         delById: RBAC_CONST.RBAC_API_PREFIX + "/menu/del/id/",
+        getTypes: RBAC_CONST.RBAC_API_PREFIX + "/menu/types",
+        add: RBAC_CONST.RBAC_API_PREFIX + "/menu/add",
+    }
+
+    static addMenu = (menuVo: MenuVO): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            ApiAxios.post(this.urls.add, menuVo)
+                .then((res: string) => {
+                    resolve(res);
+                })
+                .catch(e => {
+                    reject(e);
+                })
+        })
     }
 
     static getMenuTreeList = (): Promise<Array<MenuTree>> => {
@@ -22,7 +36,7 @@ export default class MenuData {
         })
     }
 
-    static delById = (id) : Promise<string> => {
+    static delById = (id): Promise<string> => {
         return new Promise((resolve, reject) => {
             ApiAxios.post(this.urls.delById + id)
                 .then((res: string) => {
@@ -34,11 +48,27 @@ export default class MenuData {
         })
     }
 
-    static queryMenuList = (query) : Promise<Array<MenuVO>> => {
+    static queryMenuList = (query): Promise<Array<MenuVO>> => {
         return new Promise((resolve, reject) => {
             ApiAxios.post(this.urls.queryMenuList, query)
                 .then((menuList: Array<MenuVO>) => {
                     resolve(menuList);
+                })
+                .catch(e => {
+                    reject(e);
+                })
+        })
+    }
+
+    /**
+     * 获取菜单类型.
+     * @returns {Promise<Array>}
+     */
+    static getMenuTypes = (): Promise<Array> => {
+        return new Promise((resolve, reject) => {
+            ApiAxios.get(this.urls.getTypes)
+                .then((menuTypes: Array) => {
+                    resolve(menuTypes);
                 })
                 .catch(e => {
                     reject(e);

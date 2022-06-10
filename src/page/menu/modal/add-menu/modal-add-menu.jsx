@@ -4,7 +4,7 @@ import Draggable from 'react-draggable';
 import ModalAddMenuForm from "@/page/menu/modal/add-menu/modal-add-menu-form";
 
 const ModalAddMenu = (props) => {
-    const {curRef, visible, parentMenuId} = props;
+    const {curRef, visible, parentMenuId, appId, isAdd} = props;
     const {handleOk, handleCancel} = props?.handles;
     const [disabled, setDisabled] = useState(false);
     const [bounds, setBounds] = useState({
@@ -17,7 +17,7 @@ const ModalAddMenu = (props) => {
 
     useImperativeHandle(curRef, () => (
         {
-            async submitRef() {
+            submitRef() {
                 addMenuFormRef.current?.submitRef();
             }
         }
@@ -74,7 +74,7 @@ const ModalAddMenu = (props) => {
                 </Draggable>
             )}
         >
-            <ModalAddMenuForm curRef={addMenuFormRef} defaultMenuId={parentMenuId}></ModalAddMenuForm>
+            <ModalAddMenuForm curRef={addMenuFormRef} defaultMenuId={parentMenuId} appId={appId} isAdd={isAdd}></ModalAddMenuForm>
         </Modal>
     );
 };

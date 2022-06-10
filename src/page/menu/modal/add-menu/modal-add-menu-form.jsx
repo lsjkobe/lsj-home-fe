@@ -1,13 +1,17 @@
-import {Button, Col, Form, Row, TreeSelect} from 'antd';
+import {Col, Form, Input, Row, Select, TreeSelect} from 'antd';
 import React, {useEffect, useImperativeHandle, useState} from 'react';
 import MenuData from "@/data/menu-data";
 import * as MenuUtil from "@/page/menu/menu-util";
 
+const {Option} = Select;
+
 const ModalAddMenuForm = (props) => {
 
-    const {defaultMenuId, curRef} = props;
+    const {appId, defaultMenuId, curRef, isAdd} = props;
 
     const [menuData, setMenuData] = useState([]);
+
+    const [menuTypes, setMenuTypes] = useState([]);
 
     const [menuDisabled, setMenuDisabled] = useState(false);
 
@@ -35,10 +39,8 @@ const ModalAddMenuForm = (props) => {
     }, []);
 
     useEffect(() => {
-        if (defaultMenuId) {
-            form.setFieldsValue({...form.getFieldsValue(), parentId: defaultMenuId});
-            setMenuDisabled(true);
-        }
+        form.setFieldsValue({...form.getFieldsValue(), parentId: defaultMenuId});
+        setMenuDisabled(defaultMenuId);
     }, [defaultMenuId]);
 
     useEffect(() => {
@@ -47,19 +49,22 @@ const ModalAddMenuForm = (props) => {
 
 
     const initDataAsync = async () => {
-        const menuList = await MenuData.queryMenuList({appId: 2});
-        setMenuData(menuList);
+        const _menuList = await MenuData.queryMenuList({appId: 2});
+        setMenuData(_menuList);
+        const _menuTypes = await MenuData.getMenuTypes();
+        setMenuTypes(_menuTypes);
     }
 
     const onSubmit = (values) => {
         console.info(values);
+        MenuData.addMenu({...values, appId: appId}).then();
     }
 
     return (
         <Form form={form} name="add-menu-form" onFinish={onSubmit}>
             <Row style={{margin: 0}} gutter={24}>
                 <Col span={24} key='select-parent-menu'>
-                    <Form.Item name='parentId' label='选择父级菜单'
+                    <Form.Item name='parentId' label='父级菜单'
                                rules={[
                                    {
                                        required: true,
@@ -68,14 +73,71 @@ const ModalAddMenuForm = (props) => {
                                ]}
                     >
                         <TreeSelect
-                            disabled={menuDisabled}
+                            disabled={menuDisabled || !isAdd}
                             style={{width: '100%'}}
                             dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                             treeData={menuTreeSelData}
                             placeholder="选择父菜单"
-                            // treeDefaultExpandAll
-                            // onChange={onChange}
                         />
+                    </Form.Item>
+                </Col>
+                <Col span={24} key='input-menu-name'>
+                    <Form.Item name='menuName' label='菜单名称'
+                               rules={[
+                                   {
+                                       required: true,
+                                       message: '菜单名称不能为空',
+                                   },
+                               ]}
+                    >
+                        <Input placeholder="输入菜单名称"/>
+                    </Form.Item>
+                </Col>
+                <Col span={24} key='input-menu-path'>
+                    <Form.Item name='menuPath' label='菜单路径'
+                               rules={[
+                                   {
+                                       required: true,
+                                       message: '菜单路径不能为空',
+                                   },
+                               ]}
+                    >
+                        <Input placeholder="输入菜单路径"/>
+                    </Form.Item>
+                </Col>
+                <Col span={24} key='input-menu-perms'>
+                    <Form.Item name='perms' label='授权标识'
+                               rules={[
+                                   {
+                                       required: true,
+                                       message: '授权标识不能为空',
+                                   },
+                               ]}
+                    >
+                        <Input placeholder="输入授权标识"/>
+                    </Form.Item>
+                </Col>
+                <Col span={12} key='input-menu-order'>
+                    <Form.Item name='orderNum' label='序号'>
+                        <Input placeholder="输入序号"/>
+                    </Form.Item>
+                </Col>
+                <Col span={12} key='select-menu-type'>
+                    <Form.Item name='menuType' label='菜单类型'
+                               rules={[
+                                   {
+                                       required: true,
+                                       message: '菜单类型不能为空',
+                                   },
+                               ]}
+                    >
+                        <Select name='selectMenuType' showSearch placeholder="选择菜单类型" optionFilterProp="children"
+                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                        >
+                            {menuTypes.map(app => {
+                                return <Option key={app.type} value={app.type}>{app.name}</Option>
+                            })}
+                        </Select>
                     </Form.Item>
                 </Col>
             </Row>

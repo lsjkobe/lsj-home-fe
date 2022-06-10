@@ -8,6 +8,9 @@ import ModalAddMenu from "@/page/menu/modal/add-menu/modal-add-menu";
 const MenuList = () => {
     const [addMenuVisible, setAddMenuVisible] = useState(false);
     const [menuSel, setMenuSel] = useState();
+    const [appId, setAppId] = useState();
+    //是否是新增
+    const [isAdd, setIsAdd] = useState(true)
     const menuListHeaderRef = useRef();
     const menuListTableRef = useRef();
     const modalAddMenuRef = useRef();
@@ -20,14 +23,19 @@ const MenuList = () => {
     }, []);
 
     const doSearch = (query) => {
-        if (menuListTableRef.current) {
-            menuListTableRef.current?.doQueryRef(query);
-        }
+        setAppId(query.appId);
+        menuListTableRef.current?.doQueryRef(query);
     }
 
     const doAdd = (menuId) => {
+        setIsAdd(true);
         setAddMenuVisible(true);
         setMenuSel(menuId);
+    }
+
+    const doEdit = (menu) => {
+        setIsAdd(false);
+        setAddMenuVisible(true);
     }
 
     const doDelOne = (menuId) => {
@@ -42,9 +50,7 @@ const MenuList = () => {
     const getHandles = () => {
         return {
             handleOk: () => {
-                modalAddMenuRef.current?.submitRef().then(() => {
-                    setAddMenuVisible(false);
-                });
+                modalAddMenuRef.current?.submitRef();
             },
             handleCancel: () => {
                 setAddMenuVisible(false);
@@ -59,10 +65,10 @@ const MenuList = () => {
                     doSearchCB: doSearch, doAddCB: doAdd
                 }}></MenuListHeader>
                 <MenuListTable curRef={menuListTableRef} btnCallBack={{
-                    doAddCB: doAdd, doDelCB: doDelOne
+                    doAddCB: doAdd, doEditCB: doEdit, doDelCB: doDelOne
                 }}> </MenuListTable>
             </div>
-            <ModalAddMenu curRef={modalAddMenuRef} visible={addMenuVisible} parentMenuId={menuSel}
+            <ModalAddMenu curRef={modalAddMenuRef} visible={addMenuVisible} parentMenuId={menuSel} appId={appId} isAdd={isAdd}
                           handles={getHandles()}></ModalAddMenu>
         </>
     );
