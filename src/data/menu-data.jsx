@@ -10,11 +10,24 @@ export default class MenuData {
         delById: RBAC_CONST.RBAC_API_PREFIX + "/menu/del/id/",
         getTypes: RBAC_CONST.RBAC_API_PREFIX + "/menu/types",
         add: RBAC_CONST.RBAC_API_PREFIX + "/menu/add",
+        edit: RBAC_CONST.RBAC_API_PREFIX + "/menu/edit",
     }
 
     static addMenu = (menuVo: MenuVO): Promise<string> => {
         return new Promise((resolve, reject) => {
             ApiAxios.post(this.urls.add, menuVo)
+                .then((res: string) => {
+                    resolve(res);
+                })
+                .catch(e => {
+                    reject(e);
+                })
+        })
+    }
+
+    static editMenu = (menuVo: MenuVO): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            ApiAxios.put(this.urls.edit, menuVo)
                 .then((res: string) => {
                     resolve(res);
                 })

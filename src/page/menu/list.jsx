@@ -8,7 +8,6 @@ import ModalAddMenu from "@/page/menu/modal/add-menu/modal-add-menu";
 const MenuList = () => {
     const [addMenuVisible, setAddMenuVisible] = useState(false);
     const [menuSel, setMenuSel] = useState();
-    const [appId, setAppId] = useState();
     //是否是新增
     const [isAdd, setIsAdd] = useState(true)
     const menuListHeaderRef = useRef();
@@ -23,19 +22,22 @@ const MenuList = () => {
     }, []);
 
     const doSearch = (query) => {
-        setAppId(query.appId);
+        setMenuSel({...menuSel, appId: query.appId});
         menuListTableRef.current?.doQueryRef(query);
     }
 
     const doAdd = (menuId) => {
         setIsAdd(true);
         setAddMenuVisible(true);
-        setMenuSel(menuId);
+        setMenuSel({
+            parentId: menuId
+        });
     }
 
     const doEdit = (menu) => {
         setIsAdd(false);
         setAddMenuVisible(true);
+        setMenuSel(menu);
     }
 
     const doDelOne = (menuId) => {
@@ -45,6 +47,10 @@ const MenuList = () => {
                 });
                 menuListHeaderRef.current?.doSearchRef();
             });
+    }
+
+    const doSubmitCB = (newMenu) => {
+        setAddMenuVisible(false);
     }
 
     const getHandles = () => {
@@ -68,8 +74,8 @@ const MenuList = () => {
                     doAddCB: doAdd, doEditCB: doEdit, doDelCB: doDelOne
                 }}> </MenuListTable>
             </div>
-            <ModalAddMenu curRef={modalAddMenuRef} visible={addMenuVisible} parentMenuId={menuSel} appId={appId} isAdd={isAdd}
-                          handles={getHandles()}></ModalAddMenu>
+            <ModalAddMenu curRef={modalAddMenuRef} visible={addMenuVisible} menu={menuSel} isAdd={isAdd}
+                          handles={getHandles()} callBack={{doSubmitCB: doSubmitCB}}></ModalAddMenu>
         </>
     );
 };

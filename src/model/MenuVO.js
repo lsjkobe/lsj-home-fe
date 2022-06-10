@@ -1,6 +1,7 @@
 export default class MenuTree {
     key: string;
     id: number;
+    parentId: number;
     menuName: string;
     menuPath: string;
     perms: string;

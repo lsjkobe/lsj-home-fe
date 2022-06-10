@@ -7,7 +7,9 @@ const {Option} = Select;
 
 const ModalAddMenuForm = (props) => {
 
-    const {appId, defaultMenuId, curRef, isAdd} = props;
+    const {menu, curRef, isAdd} = props;
+
+    const {doSubmitCB} = props.callBack;
 
     const [menuData, setMenuData] = useState([]);
 
@@ -39,9 +41,9 @@ const ModalAddMenuForm = (props) => {
     }, []);
 
     useEffect(() => {
-        form.setFieldsValue({...form.getFieldsValue(), parentId: defaultMenuId});
-        setMenuDisabled(defaultMenuId);
-    }, [defaultMenuId]);
+        form.setFieldsValue({...form.getFieldsValue(), ...menu});
+        setMenuDisabled(menu.parentId);
+    }, [menu.parentId]);
 
     useEffect(() => {
         setMenuTreeSelData(MenuUtil.transToTreeSelData(menuData));
@@ -49,15 +51,32 @@ const ModalAddMenuForm = (props) => {
 
 
     const initDataAsync = async () => {
-        const _menuList = await MenuData.queryMenuList({appId: 2});
+        let _menuList = await MenuData.queryMenuList({appId: menu.appId});
+        _menuList = [{
+            id: 0,
+            menuName: "/"
+        }, ..._menuList];
         setMenuData(_menuList);
         const _menuTypes = await MenuData.getMenuTypes();
         setMenuTypes(_menuTypes);
     }
 
     const onSubmit = (values) => {
-        console.info(values);
-        MenuData.addMenu({...values, appId: appId}).then();
+        doSubmitAsync(values).then(newMenu => {
+            doSubmitCB && doSubmitCB(newMenu);
+        })
+    }
+
+    const doSubmitAsync = async (values) => {
+        let newMenu;
+        if (isAdd) {
+            newMenu = {...values, appId: menu.appId};
+            await MenuData.addMenu(newMenu);
+        } else {
+            newMenu = {...menu, ...values};
+            await MenuData.editMenu(newMenu);
+        }
+        return newMenu;
     }
 
     return (
