@@ -41,9 +41,10 @@ const ModalAddMenuForm = (props) => {
     }, []);
 
     useEffect(() => {
-        form.setFieldsValue({...form.getFieldsValue(), ...menu});
+        form.resetFields();
+        form.setFieldsValue(menu);
         setMenuDisabled(menu.parentId);
-    }, [menu.parentId]);
+    }, [menu]);
 
     useEffect(() => {
         setMenuTreeSelData(MenuUtil.transToTreeSelData(menuData));

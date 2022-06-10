@@ -30,6 +30,7 @@ const MenuList = () => {
         setIsAdd(true);
         setAddMenuVisible(true);
         setMenuSel({
+            appId: menuSel?.appId,
             parentId: menuId
         });
     }
@@ -51,6 +52,7 @@ const MenuList = () => {
 
     const doSubmitCB = (newMenu) => {
         setAddMenuVisible(false);
+        menuListHeaderRef.current?.doSearchRef();
     }
 
     const getHandles = () => {
