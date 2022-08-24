@@ -60,9 +60,9 @@ const MenuListTable = (props) => {
                     width: '15%',
                 },
                 {
-                    title: 'Action',
+                    title: '操作',
                     key: 'operation',
-                    width: '20%',
+                    width: '15%',
                     render: (record) => {
                         return <MenuListAction {...props} menuData={record}></MenuListAction>
                     },

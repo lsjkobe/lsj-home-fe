@@ -7,7 +7,7 @@ import ModalAddMenu from "@/page/menu/modal/add-menu/modal-add-menu";
 
 const MenuList = () => {
     const [addMenuVisible, setAddMenuVisible] = useState(false);
-    const [menuSel, setMenuSel] = useState();
+    const [menuSel, setMenuSel] = useState({});
     //是否是新增
     const [isAdd, setIsAdd] = useState(true)
     const menuListHeaderRef = useRef();
@@ -30,7 +30,7 @@ const MenuList = () => {
         setIsAdd(true);
         setAddMenuVisible(true);
         setMenuSel({
-            appId: menuSel?.appId,
+            ...menuSel,
             parentId: menuId
         });
     }
