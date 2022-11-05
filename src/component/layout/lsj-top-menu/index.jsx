@@ -2,6 +2,7 @@ import {Menu} from "antd";
 import {Header} from "antd/es/layout/layout";
 import {useEffect, useState} from "react";
 import ApplicationData from "@/data/application-data";
+import CacheMenuHandler from "@/common/cache-menu-handler";
 
 const LsjTopMenu = (props) => {
     const {onChange} = props;
@@ -15,25 +16,28 @@ const LsjTopMenu = (props) => {
                 key: `${appData.code}`,
                 label: `${appData.name}`,
             })))
-            setMenuSelKey(appList[0].code);
-            onChange(appList[0].code);
         }
     }, [appList]);
 
+    useEffect(() => {
+
+    }, [menuSelKey]);
 
     useEffect(() => {
         const init = () => {
-            menuInit();
+            menuInit().then();
         }
 
-        const menuInit = () => {
-            ApplicationData.getBatchByCurUser()
-                .then(appList => {
-                    setAppList(appList);
-                })
-                .catch(e => {
-                    console.log(e);
-                })
+        const menuInit = async () => {
+            let appList = await ApplicationData.getBatchByCurUser();
+            setAppList(appList);
+            let topMenuKey = appList[0].code;
+            if (CacheMenuHandler.getMenuCache().curTopMenuKey) {
+                topMenuKey = CacheMenuHandler.getMenuCache().curTopMenuKey;
+            }
+            CacheMenuHandler.saveCurTopMenuKey(topMenuKey);
+            setMenuSelKey(topMenuKey);
+            onChange(topMenuKey);
         }
 
         init();
@@ -42,6 +46,7 @@ const LsjTopMenu = (props) => {
     const onMenuClick = (item) => {
         onChange(item.key);
         setMenuSelKey([item.key]);
+        CacheMenuHandler.saveCurTopMenuKey(item.key);
     }
 
     return (

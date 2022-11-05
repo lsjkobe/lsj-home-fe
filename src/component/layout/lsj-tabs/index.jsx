@@ -3,6 +3,7 @@ import {Tabs} from "antd";
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useNavigate} from 'react-router-dom'
 import {getRouteByPath} from "@/route/root-route";
+import CacheMenuHandler from "@/common/cache-menu-handler";
 
 const {TabPane} = Tabs;
 
@@ -23,7 +24,13 @@ const LsjTabs = (props) => {
     ))
     // tabs切换时跳转
     useEffect(() => {
-        let route = getRouteByPath(curPaneKey);
+        let paneKey = curPaneKey;
+        let menuCache = CacheMenuHandler.getMenuCache();
+        if (menuCache.curPaneKey) {
+            setCurPaneKey(menuCache.curPaneKey);
+            paneKey = menuCache.curPaneKey;
+        }
+        let route = getRouteByPath(paneKey);
         if (route) {
             const defaultPane = {
                 title: route.name,
@@ -38,6 +45,7 @@ const LsjTabs = (props) => {
     useEffect(() => {
         navigate(curPaneKey);
         props.onChangePane(curPaneKey);
+        CacheMenuHandler.saveCurPaneKey(curPaneKey);
     }, [curPaneKey]);
 
     const addNewPane = (newPane) => {

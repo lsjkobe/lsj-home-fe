@@ -31,7 +31,7 @@ const LsjNavigate = (props) => {
     }, [])
 
     const menuInit = (appCode) => {
-        if (!appCode) {
+        if (!appCode || appCode.length === 0) {
             return;
         }
         MenuData.getMenuTreeList(appCode)
