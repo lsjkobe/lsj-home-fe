@@ -5,7 +5,7 @@ import MenuVO from "@/model/MenuVO";
 
 export default class MenuData {
     static urls = {
-        getMenuTree: RBAC_CONST.RBAC_API_PREFIX + "/auth/get/menuTree",
+        getMenuTree: RBAC_CONST.RBAC_API_PREFIX + "/auth/get/menuTree/",
         queryMenuList: RBAC_CONST.RBAC_API_PREFIX + "/menu/query/list",
         delById: RBAC_CONST.RBAC_API_PREFIX + "/menu/del/id/",
         getTypes: RBAC_CONST.RBAC_API_PREFIX + "/menu/types",
@@ -37,9 +37,9 @@ export default class MenuData {
         })
     }
 
-    static getMenuTreeList = (): Promise<Array<MenuTree>> => {
+    static getMenuTreeList = (appCode): Promise<Array<MenuTree>> => {
         return new Promise((resolve, reject) => {
-            ApiAxios.get(this.urls.getMenuTree)
+            ApiAxios.get(this.urls.getMenuTree + appCode)
                 .then((menuData: Array<MenuTree>) => {
                     resolve(menuData);
                 })

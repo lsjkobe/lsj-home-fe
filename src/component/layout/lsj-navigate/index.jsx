@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router-dom'
 type MenuItem = Required<MenuProps>['items'][number];
 
 const LsjNavigate = (props) => {
-    const {onMenuSel, curRef} = props;
+    const {onMenuSel, curRef, appCode} = props;
     const [collapsed, setCollapsed] = useState(props.collapsed);
     const [menuSelKey, setMenuSelKey] = useState([]);
     const [menuTreeList, setMenuTreeList] = useState([]);
@@ -20,45 +20,51 @@ const LsjNavigate = (props) => {
     }, [props.collapsed])
 
     useEffect(() => {
+        menuInit(appCode);
+    }, [appCode])
+
+    useEffect(() => {
         const init = () => {
-            menuInit();
+            // menuInit();
         }
-
-        const menuInit = () => {
-            MenuData.getMenuTreeList()
-                .then(menuTreeListResp => {
-                    let menuTreeList = menuTreeToShow(menuTreeListResp);
-                    setMenuTreeList(menuTreeList);
-                    // setMenuSelKey(menuTreeListResp[0].menuPath)
-                })
-                .catch(e => {
-                    console.log(e);
-                })
-        }
-
-        const menuTreeToShow = (menuTreeListResp: Array<MenuTree>) => {
-            let items: MenuProps['items'] = [];
-            for (let menuTree of menuTreeListResp) {
-                let item = menuTreeSingleToShow(menuTree);
-                items.push(item);
-            }
-            return items;
-        }
-
-        const menuTreeSingleToShow = (menuTree: MenuTree) => {
-            let item = getItem(menuTree.menuName, menuTree.menuPath, <Icon icon={menuTree.menuIcon}/>);
-            if (menuTree.children && menuTree.children.length > 0) {
-                item.children = [];
-                for (let child of menuTree.children) {
-                    let childItem = menuTreeSingleToShow(child);
-                    item.children.push(childItem);
-                }
-            }
-            return item;
-        }
-
         init();
     }, [])
+
+    const menuInit = (appCode) => {
+        if (!appCode) {
+            return;
+        }
+        MenuData.getMenuTreeList(appCode)
+            .then(menuTreeListResp => {
+                let menuTreeList = menuTreeToShow(menuTreeListResp);
+                setMenuTreeList(menuTreeList);
+                // setMenuSelKey(menuTreeListResp[0].menuPath)
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
+
+    const menuTreeToShow = (menuTreeListResp: Array<MenuTree>) => {
+        let items: MenuProps['items'] = [];
+        for (let menuTree of menuTreeListResp) {
+            let item = menuTreeSingleToShow(menuTree);
+            items.push(item);
+        }
+        return items;
+    }
+
+    const menuTreeSingleToShow = (menuTree: MenuTree) => {
+        let item = getItem(menuTree.menuName, menuTree.menuPath, <Icon icon={menuTree.menuIcon}/>);
+        if (menuTree.children && menuTree.children.length > 0) {
+            item.children = [];
+            for (let child of menuTree.children) {
+                let childItem = menuTreeSingleToShow(child);
+                item.children.push(childItem);
+            }
+        }
+        return item;
+    }
 
     const getItem = (
         label: React.ReactNode, key: React.Key,
@@ -87,10 +93,10 @@ const LsjNavigate = (props) => {
     }
 
     return (
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-            <div className="logo"/>
+        <Sider trigger={null} collapsible collapsed={collapsed} theme={"light"}>
+            {/*<div className="logo"/>*/}
             <Menu
-                theme="dark"
+                theme="light"
                 mode="inline"
                 selectedKeys={menuSelKey}
                 items={menuTreeList}
