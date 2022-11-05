@@ -4,7 +4,7 @@ import AppVO from "@/model/AppVO";
 
 export default class ApplicationData {
     static urls = {
-        getBatchByCurUser: RBAC_CONST.RBAC_API_PREFIX + "/application/get/batch/curUser",
+        getBatchByCurUser: RBAC_CONST.RBAC_API_PREFIX + "/app/get/batch/curUser",
     }
 
     constructor() {
